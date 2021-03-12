@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS `migrations`;
+DROP TABLE IF EXISTS `movies`;
+DROP TABLE IF EXISTS `actors`;
+DROP TABLE IF EXISTS `images`;
