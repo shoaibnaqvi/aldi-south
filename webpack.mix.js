@@ -12,9 +12,9 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js/app.js')
-    .css('resources/sass/app.css', 'public/css/')
+    .css('resources/sass/app.css', 'public/css/');
 
     /**
-     * components for article pages
+     * vuejs components for pages
      * */
-    .js('resources/js/components/movies.js','public/js/components/movies.js');
+    //.js('resources/js/components/example.js','public/js/components/example.js');

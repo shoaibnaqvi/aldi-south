@@ -34821,7 +34821,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/syedshoaib/PhpstormProjects/aldi-south/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/syedshoaib/PhpstormProjects/laravel-app/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })

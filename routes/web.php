@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/','MovieController@index')->name('movies.index');
-
-Route::get('getMoviesJson','MovieController@getMoviesJson')->name('movies.getjson');
+Route::get('/', function () {
+    return view('welcome');
+});
