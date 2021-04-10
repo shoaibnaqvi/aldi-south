@@ -1,0 +1,65 @@
+"A date string with format `Y-m-d`, e.g. `2011-05-23`."
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+type Mutation {
+    createBlog(
+        title: String! @rules(apply: ["required"])
+        description: String! @rules(apply: ["required"])
+        user_id: Int! @rules(apply: ["required"])
+    ): Blog @create
+    updateBlog(
+        id: ID! @rules(apply: ["required"])
+        title: String! @rules(apply: ["required"])
+        description: String!
+    ): Blog @update
+    deleteBlog(
+        id: ID! @rules(apply: ["required"])
+    ): Blog @delete
+}
+
+type Query {
+    users: [User] @all
+    user(id: ID @eq): User @find
+    blogs: [Blog] @all
+    blog(id: ID @eq): Blog @find
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    blogs: [Blog] @hasMany
+}
+
+type Blog {
+    id: ID!
+    title: String!
+    description: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    user: User @belongsTo
+    posts: [Post] @hasMany
+}
+
+type Post {
+    id: ID!
+    title: String!
+    description: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    blog: Blog @belongsTo
+    comments: [Comment] @hasMany
+}
+
+type Comment {
+    id: ID!
+    comment: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    post: Post @belongsTo
+}

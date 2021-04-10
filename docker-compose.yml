@@ -45,17 +45,16 @@ services:
       args:
         user: shoaib
         uid: 1000
-      context: ./
+      context: ./api
       dockerfile: Dockerfile
     image: php
     container_name: app
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
-      - ./:/var/www
+      - ./api:/var/www
     depends_on:
       - db
-      - frontend-nginx
       - api-nginx
     networks:
       laravel-app:
@@ -72,44 +71,29 @@ services:
       MYSQL_USER: "developer"
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+    ports:
+      - 3307:3306
     volumes:
       - ./docker-compose/mysql:/docker-entrypoint-initdb.d
     networks:
-      - laravel-app
-      - web
-
-  frontend-nginx:
-    image: nginx:alpine
-    container_name: frontend-nginx
-    restart: unless-stopped
-    ports:
-      - 8000:80
-    volumes:
-      - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d/
-    networks:
       laravel-app:
         aliases:
-          - "frontend.laravel.test"
+          - "db.laravel.test"
       web:
         aliases:
-          - "frontend.laravel.test"
+          - "db.laravel.test"
     labels:
       #### Labels define the behavior and rules of the traefik proxy for this container ####
       - "traefik.enable=true" # <== Enable traefik to proxy this container
-      - "traefik.http.routers.nginx-web.rule=Host(`frontend.laravel.test`)" # <== Your Domain Name goes here for the http rule
-      - "traefik.http.routers.nginx-web.entrypoints=web" # <== Defining the entrypoint for http, **ref: line 30
-      - "traefik.http.routers.nginx-web.middlewares=redirect@file" # <== This is a middleware to redirect to https
-      - "traefik.http.routers.nginx-secured.rule=Host(`frontend.laravel.test`)" # <== Your Domain Name for the https rule
-      - "traefik.http.routers.nginx-secured.entrypoints=web-secured" # <== Defining entrypoint for https, **ref: line 31
-      - "traefik.http.routers.nginx-secured.tls.certresolver=mytlschallenge" # <== Defining certsresolvers for https
+      - "traefik.http.routers.mysql.rule=Host(`db.laravel.test`)" # <== Your Domain Name goes here for the http rule
+      - "traefik.http.routers.mysql.entrypoints=web" # <== Defining the entrypoint for http, **ref: line 30
 
   api-nginx:
     image: nginx:alpine
     container_name: api-nginx
     restart: unless-stopped
     ports:
-      - 9000:80
+      - 8000:80
     volumes:
       - ./api:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
@@ -129,6 +113,24 @@ services:
       - "traefik.http.routers.nginx-secured.rule=Host(`api.laravel.test`)" # <== Your Domain Name for the https rule
       - "traefik.http.routers.nginx-secured.entrypoints=web-secured" # <== Defining entrypoint for https, **ref: line 31
       - "traefik.http.routers.nginx-secured.tls.certresolver=mytlschallenge" # <== Defining certsresolvers for https
+
+  frontend-nodejs:
+    container_name: frontend-nodejs
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - './frontend:/app'
+      - '/app/node_modules'
+    ports:
+      - '8081:8080'
+    networks:
+      laravel-app:
+        aliases:
+          - "frontend.laravel.test"
+      web:
+        aliases:
+          - "frontend.laravel.test"
 
 networks:
   laravel-app:
