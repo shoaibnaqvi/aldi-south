@@ -1,5 +1,14 @@
-<h1>Contact page</h1>
+{% extends "base.html.twig" %}
 
-<p>
-    {{ name }} is a {{ occupation }}
-</p>
+{% block title %}Index{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <h1>Index</h1>
+    <p class="important">
+        Welcome on my awesome contact page.
+    </p>
+{% endblock %}

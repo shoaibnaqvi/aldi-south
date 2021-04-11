@@ -1,0 +1,18 @@
+{
+    "name": "syedshoaib/mvc-app",
+    "description": "mvc app for check24",
+    "authors": [
+        {
+            "name": "Shoaib Syed",
+            "email": "s.syed@crowdfox.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "require": {
+        "twig/twig": "^3.3"
+    }
+}
